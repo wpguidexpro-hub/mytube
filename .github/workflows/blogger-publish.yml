@@ -1,0 +1,23 @@
+name: Publish tutorials to Blogger
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tutorials/*.md'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Publish tutorials to Blogger
+        env:
+          BLOGGER_BLOG_ID: ${{ secrets.BLOGGER_BLOG_ID }}
+          BLOGGER_ACCESS_TOKEN: ${{ secrets.BLOGGER_ACCESS_TOKEN }}
+        run: |
+          python3 .github/scripts/publish_blogger.py tutorials
